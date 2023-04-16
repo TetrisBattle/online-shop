@@ -3,8 +3,9 @@ import { Backdrop, CircularProgress } from '@mui/material'
 import { useStoreContext } from 'contexts/StoreContext'
 import Header from 'components/header/Header'
 import AppRoutes from 'AppRoutes'
+import { observer } from 'mobx-react-lite'
 
-export default function App() {
+function App() {
 	const { appStore } = useStoreContext()
 
 	return (
@@ -18,3 +19,5 @@ export default function App() {
 		</Router>
 	)
 }
+
+export default observer(App)
