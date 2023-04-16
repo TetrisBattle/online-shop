@@ -1,4 +1,5 @@
 using Application;
+using Application.Core;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -21,6 +22,8 @@ builder.Services.AddDbContext<DataContext>(opt =>
 builder.Services.AddCors(opt => opt.AddPolicy("CorsPolicy", policy => policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000")));
 
 builder.Services.AddMediatR(typeof(List.Handler).Assembly);
+
+builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 
 var app = builder.Build();
 
