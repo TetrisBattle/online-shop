@@ -477,6 +477,7 @@ $RECYCLE.BIN/
 *.lnk
 
 
+API/appsettings.json
 API/online_shop.db
 API/online_shop.db-shm
 API/online_shop.db-wal
