@@ -16,6 +16,15 @@ export default function muiTheme(isDarkTheme: boolean) {
 			// 		},
 			// 	},
 			// },
+			MuiDialog: {
+				styleOverrides: {
+					root: {
+						'& .MuiDialog-paper': {
+							minWidth: theme.breakpoints.values.sm,
+						},
+					},
+				},
+			},
 		},
 	})
 }

@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, Typography, Box, Button } from '@mui/material'
+import { AppBar, Toolbar, Typography, Box } from '@mui/material'
 import HeaderMenu from './HeaderMenu'
 import DarkThemeIconButton from '../DarkThemeIconButton'
 import HeaderButton from './HeaderButton'
@@ -10,12 +10,12 @@ export default function Header() {
 		<AppBar>
 			<Toolbar sx={{ p: 1 }}>
 				<Logo width={48} height={48} />
-				<Typography variant='h1' sx={{ pl: 1, fontSize: 32 }}>
+				<Typography
+					variant='h1'
+					sx={{ pl: 1, mr: 'auto', fontSize: 32 }}
+				>
 					OnlineShop
 				</Typography>
-				<Button sx={{ ml: 3, mr: 'auto', borderRadius: 10 }}>
-					Add new Item
-				</Button>
 				<Box
 					sx={{
 						pr: 1,

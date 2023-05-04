@@ -38,6 +38,11 @@ export default function muiTheme(isDarkTheme: boolean) {
 					variant: 'contained',
 				},
 			},
+			MuiTextField: {
+				defaultProps: {
+					autoComplete: 'off',
+				},
+			},
 			MuiLink: {
 				defaultProps: {
 					underline: 'none',
