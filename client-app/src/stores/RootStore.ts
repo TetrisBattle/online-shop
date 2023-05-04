@@ -1,5 +1,5 @@
 import AppStore from './AppStore'
-import PhoneStore from '../components/features/phone/PhoneStore'
+import PhoneStore from 'features/phone/PhoneStore'
 
 export default class RootStore {
 	appStore = new AppStore()

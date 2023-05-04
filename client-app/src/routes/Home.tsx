@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { Box } from '@mui/material'
-import PhoneList from 'components/features/phone/PhoneList'
+import PhoneList from 'features/phone/PhoneList'
 
 function Home() {
 	return (

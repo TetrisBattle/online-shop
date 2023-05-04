@@ -2,7 +2,7 @@ import { Box, Button, Typography } from '@mui/material'
 import { useStoreContext } from 'contexts/StoreContext'
 import Gateway from 'Gateway'
 import { useEffect } from 'react'
-import { Phone } from 'components/features/phone/PhoneStore'
+import { Phone } from './PhoneStore'
 import { observer } from 'mobx-react-lite'
 
 function PhoneList() {
