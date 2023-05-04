@@ -4,7 +4,7 @@ using Persistence;
 
 namespace Application.Activities;
 
-public static class Create
+public static class Add
 {
 	public class Command : IRequest
 	{
