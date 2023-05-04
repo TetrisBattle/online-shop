@@ -1,4 +1,3 @@
-using Application;
 using Application.Core;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -30,7 +29,8 @@ public static class ApplicationServicesExtensions
 				.WithOrigins("http://localhost:3000")
 		));
 
-		services.AddMediatR(typeof(List.Handler).Assembly);
+		services.AddMediatR(typeof(Application.Activities.List.Handler));
+		services.AddMediatR(typeof(Application.Phones.GetAll.Handler));
 
 		services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 
