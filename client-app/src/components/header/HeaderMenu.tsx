@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { IconButton, Menu, MenuItem } from '@mui/material'
 import { Menu as MenuIcon } from '@mui/icons-material'
 import { NavLink } from 'react-router-dom'
-import { RouteOption, routeToTitle } from 'AppRoutes'
+import { RouteOption, routeToTitle } from 'App'
 
 interface HeaderMenuProps {
 	routes: RouteOption[]
