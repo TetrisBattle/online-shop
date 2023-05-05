@@ -2,13 +2,13 @@ using Domain;
 using MediatR;
 using Persistence;
 
-namespace Application.Phones;
+namespace Application.Activities;
 
-public static class Add
+public static class Create
 {
 	public class Command : IRequest
 	{
-		public Phone Phone { get; set; }
+		public Activity Activity { get; set; }
 	}
 
 	public class Handler : IRequestHandler<Command>
@@ -22,7 +22,7 @@ public static class Add
 
 		public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
 		{
-			_context.Phones.Add(request.Phone);
+			_context.Activities.Add(request.Activity);
 
 			await _context.SaveChangesAsync(cancellationToken);
 

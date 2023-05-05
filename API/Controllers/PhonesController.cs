@@ -19,16 +19,16 @@ public class PhonesController : BaseApiController
 	}
 
 	[HttpPost]
-	public async Task<IActionResult> Add(Phone phone)
+	public async Task<IActionResult> Create(Phone phone)
 	{
-		return Ok(await Mediator.Send(new Add.Command { Phone = phone }));
+		return Ok(await Mediator.Send(new Create.Command { Phone = phone }));
 	}
 
 	[HttpPut("{id}")]
-	public async Task<IActionResult> Edit(Guid id, Phone phone)
+	public async Task<IActionResult> Update(Guid id, Phone phone)
 	{
 		phone.Id = id;
-		return Ok(await Mediator.Send(new Edit.Command { Phone = phone }));
+		return Ok(await Mediator.Send(new Update.Command { Phone = phone }));
 	}
 
 	[HttpDelete("{id}")]
