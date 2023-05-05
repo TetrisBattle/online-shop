@@ -51,8 +51,8 @@ export default class Phone {
 			dto.price.toString(),
 			dto.description,
 			dto.category,
-			dto.publishDate,
-			dto.updateDate
+			new Date(dto.publishDate),
+			dto.updateDate ? new Date(dto.updateDate) : null
 		)
 	}
 

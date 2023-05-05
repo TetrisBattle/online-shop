@@ -16,9 +16,11 @@ export default class PhoneStore {
 		this.getPhones()
 	}
 
-	get phonesByPrice() {
+	get phones() {
 		const phonesArray = Array.from(this.phoneRegistry.values())
-		return phonesArray.sort((a, b) => (+a.price < +b.price ? -1 : 1))
+		return phonesArray.sort((a, b) =>
+			a.publishDate > b.publishDate ? -1 : 1
+		)
 	}
 
 	setSelectedPhone(phone: Phone) {

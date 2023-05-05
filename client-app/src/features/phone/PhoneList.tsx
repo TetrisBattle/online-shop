@@ -21,7 +21,7 @@ function PhoneList() {
 				gap: 2,
 			}}
 		>
-			{phoneStore.phonesByPrice.map((phone) => (
+			{phoneStore.phones.map((phone) => (
 				<PhoneListItem key={phone.id} phone={phone} />
 			))}
 		</Box>

@@ -2,6 +2,7 @@ import { Box, Button, Typography } from '@mui/material'
 import { useStoreContext } from 'contexts/StoreContext'
 import Phone from './Phone'
 import { observer } from 'mobx-react-lite'
+import { formatDate } from 'utility/date'
 
 interface PhoneListItemProps {
 	phone: Phone
@@ -39,8 +40,10 @@ function PhoneListItem({ phone }: PhoneListItemProps) {
 			<Typography>{phone.description}</Typography>
 			<br />
 			<Typography>{phone.category}</Typography>
-			<Typography>{phone.publishDate.toString()}</Typography>
-			<Typography>{phone.updateDate?.toString()}</Typography>
+			<Typography>{formatDate(phone.publishDate)}</Typography>
+			{phone.updateDate && (
+				<Typography>{formatDate(phone.updateDate)}</Typography>
+			)}
 			<Box
 				sx={{
 					display: 'flex',
