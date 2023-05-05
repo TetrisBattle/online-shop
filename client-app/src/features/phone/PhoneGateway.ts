@@ -1,4 +1,4 @@
-import { requests } from 'gateway2'
+import { requests } from 'gateway'
 
 export interface PhoneDto {
 	id: string
