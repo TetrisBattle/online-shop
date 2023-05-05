@@ -53,7 +53,6 @@ export default class PhoneStore {
 	async create(newPhone: Phone) {
 		this.selectedPhone.setId(uuid())
 		this.selectedPhone.setPublishDate(new Date())
-		this.selectedPhone.setUpdateDate(new Date())
 		try {
 			await gateway.phone.create(newPhone.convertToDto())
 		} catch (error) {
