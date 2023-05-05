@@ -29,8 +29,8 @@ public static class ApplicationServicesExtensions
 				.WithOrigins("http://localhost:3000")
 		));
 
-		services.AddMediatR(typeof(Application.Activities.GetAll.Handler));
-		services.AddMediatR(typeof(Application.Phones.GetAll.Handler));
+		services.AddMediatR(typeof(Application.Activities.GetActivities.Handler));
+		services.AddMediatR(typeof(Application.Phones.GetPhones.Handler));
 
 		services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 

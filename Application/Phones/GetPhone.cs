@@ -4,7 +4,7 @@ using Persistence;
 
 namespace Application.Phones;
 
-public static class GetById
+public static class GetPhone
 {
 	public class Query : IRequest<Phone>
 	{

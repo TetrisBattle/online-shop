@@ -13,7 +13,7 @@ export interface PhoneDto {
 export default class PhoneGateway {
 	constructor(private baseApiUrl: string) {}
 
-	async getAll(): Promise<PhoneDto[]> {
+	async getPhones(): Promise<PhoneDto[]> {
 		const response = await axios.get(`${this.baseApiUrl}/Phones`)
 		return response.data
 	}

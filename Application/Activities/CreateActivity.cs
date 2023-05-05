@@ -1,13 +1,14 @@
+using Domain;
 using MediatR;
 using Persistence;
 
 namespace Application.Activities;
 
-public static class Delete
+public static class CreateActivity
 {
 	public class Command : IRequest
 	{
-		public Guid Id { get; set; }
+		public Activity Activity { get; set; }
 	}
 
 	public class Handler : IRequestHandler<Command>
@@ -21,9 +22,7 @@ public static class Delete
 
 		public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
 		{
-			var activity = await _context.Activities.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
-
-			_context.Remove(activity);
+			_context.Activities.Add(request.Activity);
 
 			await _context.SaveChangesAsync(cancellationToken);
 

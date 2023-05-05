@@ -3,13 +3,13 @@ using Domain;
 using MediatR;
 using Persistence;
 
-namespace Application.Activities;
+namespace Application.Phones;
 
-public static class Update
+public static class UpdatePhone
 {
 	public class Command : IRequest
 	{
-		public Activity Activity { get; set; }
+		public Phone Phone { get; set; }
 	}
 
 	public class Handler : IRequestHandler<Command>
@@ -25,9 +25,9 @@ public static class Update
 
 		public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
 		{
-			var activity = await _context.Activities.FindAsync(new object[] { request.Activity.Id }, cancellationToken: cancellationToken);
+			var phone = await _context.Phones.FindAsync(new object[] { request.Phone.Id }, cancellationToken: cancellationToken);
 
-			_mapper.Map(request.Activity, activity);
+			_mapper.Map(request.Phone, phone);
 
 			await _context.SaveChangesAsync(cancellationToken);
 

@@ -1,9 +1,9 @@
 using MediatR;
 using Persistence;
 
-namespace Application.Phones;
+namespace Application.Activities;
 
-public static class Delete
+public static class DeleteActivity
 {
 	public class Command : IRequest
 	{
@@ -21,9 +21,9 @@ public static class Delete
 
 		public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
 		{
-			var phone = await _context.Phones.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
+			var activity = await _context.Activities.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
 
-			_context.Remove(phone);
+			_context.Remove(activity);
 
 			await _context.SaveChangesAsync(cancellationToken);
 

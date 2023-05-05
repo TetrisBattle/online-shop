@@ -1,14 +1,13 @@
-using Domain;
 using MediatR;
 using Persistence;
 
 namespace Application.Phones;
 
-public static class Create
+public static class DeletePhone
 {
 	public class Command : IRequest
 	{
-		public Phone Phone { get; set; }
+		public Guid Id { get; set; }
 	}
 
 	public class Handler : IRequestHandler<Command>
@@ -22,7 +21,9 @@ public static class Create
 
 		public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
 		{
-			_context.Phones.Add(request.Phone);
+			var phone = await _context.Phones.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
+
+			_context.Remove(phone);
 
 			await _context.SaveChangesAsync(cancellationToken);
 

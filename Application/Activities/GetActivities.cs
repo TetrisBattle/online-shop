@@ -5,7 +5,7 @@ using Persistence;
 
 namespace Application.Activities;
 
-public static class GetAll
+public static class GetActivities
 {
 	public class Query : IRequest<List<Activity>> { }
 

@@ -7,18 +7,17 @@ export default class PhoneStore {
 	selectedPhone: Phone = new Phone()
 	dialogOpen = false
 
-	constructor() {
+	constructor(private gateway: Gateway) {
 		makeAutoObservable(this)
 	}
 
 	init() {
-		const gateway = new Gateway()
-		gateway.phone.getAll().then((phones) => {
-			const xPhones: Phone[] = []
-			phones.forEach((phone) => {
-				xPhones.push(Phone.convertFromDto(phone))
+		this.gateway.phone.getPhones().then((phonesDto) => {
+			const phones: Phone[] = []
+			phonesDto.forEach((phoneDto) => {
+				phones.push(Phone.convertFromDto(phoneDto))
 			})
-			this.setPhones(xPhones)
+			this.setPhones(phones)
 		})
 	}
 

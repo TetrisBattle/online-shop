@@ -4,7 +4,7 @@ using Persistence;
 
 namespace Application.Activities;
 
-public static class GetById
+public static class GetActivity
 {
 	public class Query : IRequest<Activity>
 	{
