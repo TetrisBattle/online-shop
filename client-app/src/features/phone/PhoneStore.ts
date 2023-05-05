@@ -11,14 +11,9 @@ export default class PhoneStore {
 		makeAutoObservable(this)
 	}
 
-	init() {
-		this.gateway.phone.getPhones().then((phonesDto) => {
-			const phones: Phone[] = []
-			phonesDto.forEach((phoneDto) => {
-				phones.push(Phone.convertFromDto(phoneDto))
-			})
-			this.setPhones(phones)
-		})
+	async init() {
+		const phones = await this.getPhones()
+		this.setPhones(phones)
 	}
 
 	private setPhones(phones: Phone[]) {
@@ -36,18 +31,35 @@ export default class PhoneStore {
 		}
 	}
 
+	async getPhone(phoneId: string): Promise<Phone> {
+		const phoneDto = await this.gateway.phone.getPhone(phoneId)
+		return Phone.convertFromDto(phoneDto)
+	}
+
+	private async getPhones(): Promise<Phone[]> {
+		const phonesDto = await this.gateway.phone.getPhones()
+		const phones: Phone[] = []
+		phonesDto.forEach((phoneDto) => {
+			phones.push(Phone.convertFromDto(phoneDto))
+		})
+		return phones
+	}
+
 	create(newPhone: Phone) {
+		this.gateway.phone.createPhone(newPhone.convertToDto())
 		this.setPhones([...this.phones, newPhone])
 	}
 
 	update(updatedPhone: Phone) {
+		this.gateway.phone.updatePhone(updatedPhone.convertToDto())
 		this.setPhones([
 			...this.phones.filter((phone) => phone.id !== updatedPhone.id),
 			updatedPhone,
 		])
 	}
 
-	delete(id: string) {
-		this.setPhones(this.phones.filter((phone) => phone.id !== id))
+	delete(phoneId: string) {
+		this.gateway.phone.deletePhone(phoneId)
+		this.setPhones(this.phones.filter((phone) => phone.id !== phoneId))
 	}
 }

@@ -10,12 +10,12 @@ interface PhoneListItemProps {
 function PhoneListItem({ phone }: PhoneListItemProps) {
 	const { phoneStore } = useStoreContext()
 
-	function handleEdit() {
+	function handleOnEditClick() {
 		phoneStore.setSelectedPhone(phone.copy())
 		phoneStore.setDialogOpen(true)
 	}
 
-	function handleDelete() {
+	function handleOnDeleteClick() {
 		phoneStore.delete(phone.id)
 	}
 
@@ -48,10 +48,10 @@ function PhoneListItem({ phone }: PhoneListItemProps) {
 					gap: 1,
 				}}
 			>
-				<Button onClick={handleDelete} color='error'>
+				<Button onClick={handleOnDeleteClick} color='error'>
 					Delete
 				</Button>
-				<Button onClick={handleEdit}>Edit</Button>
+				<Button onClick={handleOnEditClick}>Edit</Button>
 			</Box>
 		</Box>
 	)
