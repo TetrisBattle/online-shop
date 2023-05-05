@@ -1,10 +1,10 @@
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, runInAction } from 'mobx'
 import Phone from './Phone'
 import gateway from 'gateway'
 import { v4 as uuid } from 'uuid'
 
 export default class PhoneStore {
-	phones: Phone[] = []
+	phoneRegistry = new Map<string, Phone>()
 	selectedPhone: Phone = new Phone()
 	dialogOpen = false
 
@@ -12,13 +12,13 @@ export default class PhoneStore {
 		makeAutoObservable(this)
 	}
 
-	async init() {
-		const phones = await this.getPhones()
-		this.setPhones(phones)
+	init() {
+		this.getPhones()
 	}
 
-	private setPhones(phones: Phone[]) {
-		this.phones = phones
+	get phonesByPrice() {
+		const phonesArray = Array.from(this.phoneRegistry.values())
+		return phonesArray.sort((a, b) => (+a.price < +b.price ? -1 : 1))
 	}
 
 	setSelectedPhone(phone: Phone) {
@@ -32,14 +32,17 @@ export default class PhoneStore {
 		}
 	}
 
-	private async getPhones(): Promise<Phone[]> {
+	private async getPhones(): Promise<void> {
 		try {
 			const phonesDto = await gateway.phone.getPhones()
-			const phones: Phone[] = []
 			phonesDto.forEach((phoneDto) => {
-				phones.push(Phone.convertFromDto(phoneDto))
+				runInAction(() => {
+					this.phoneRegistry.set(
+						phoneDto.id,
+						Phone.convertFromDto(phoneDto)
+					)
+				})
 			})
-			return phones
 		} catch (error) {
 			throw new Error()
 		}
@@ -58,7 +61,9 @@ export default class PhoneStore {
 		} catch (error) {
 			throw new Error()
 		} finally {
-			this.setPhones([...this.phones, newPhone])
+			runInAction(() => {
+				this.phoneRegistry.set(newPhone.id, newPhone)
+			})
 		}
 	}
 
@@ -69,10 +74,9 @@ export default class PhoneStore {
 		} catch (error) {
 			throw new Error()
 		} finally {
-			this.setPhones([
-				...this.phones.filter((phone) => phone.id !== updatedPhone.id),
-				updatedPhone,
-			])
+			runInAction(() => {
+				this.phoneRegistry.set(updatedPhone.id, updatedPhone)
+			})
 		}
 	}
 
@@ -82,7 +86,9 @@ export default class PhoneStore {
 		} catch (error) {
 			throw new Error()
 		} finally {
-			this.setPhones(this.phones.filter((phone) => phone.id !== phoneId))
+			runInAction(() => {
+				this.phoneRegistry.delete(phoneId)
+			})
 		}
 	}
 }
