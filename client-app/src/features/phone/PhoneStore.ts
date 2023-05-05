@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx'
 import Phone from './Phone'
-import gateway from 'gateway'
+import gateway from 'gateway2'
 import { v4 as uuid } from 'uuid'
 
 export default class PhoneStore {
