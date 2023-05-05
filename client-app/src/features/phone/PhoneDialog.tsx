@@ -2,19 +2,14 @@ import { Button, Grid, InputAdornment, TextField } from '@mui/material'
 import CustomDialog from 'components/CustomDialog'
 import { useStoreContext } from 'contexts/StoreContext'
 import { observer } from 'mobx-react-lite'
-import { v4 as uuid } from 'uuid'
 
 function PhoneDialog() {
 	const { phoneStore } = useStoreContext()
 
 	function handleSave() {
 		if (!phoneStore.selectedPhone.id) {
-			phoneStore.selectedPhone.setId(uuid())
-			phoneStore.selectedPhone.setPublishDate(new Date())
 			phoneStore.create(phoneStore.selectedPhone)
-		} else {
-			phoneStore.update(phoneStore.selectedPhone)
-		}
+		} else phoneStore.update(phoneStore.selectedPhone)
 		phoneStore.setDialogOpen(false)
 	}
 

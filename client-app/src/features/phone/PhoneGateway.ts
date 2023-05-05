@@ -1,4 +1,4 @@
-import axios from 'axios'
+import { requests } from 'gateway'
 
 export interface PhoneDto {
 	id: string
@@ -10,34 +10,24 @@ export interface PhoneDto {
 	updateDate: Date | null
 }
 
-export default class PhoneGateway {
-	baseUrl: string
-	constructor(baseApiUrl: string) {
-		this.baseUrl = `${baseApiUrl}/Phones`
-	}
+const phoneApiUrl = '/phones'
 
-	async getPhone(phoneId: string): Promise<PhoneDto> {
-		const response = await axios.get(`${this.baseUrl}?id=${phoneId}`)
-		return response.data
-	}
-
-	async getPhones(): Promise<PhoneDto[]> {
-		const response = await axios.get(this.baseUrl)
-		return response.data
-	}
-
-	async createPhone(phone: PhoneDto): Promise<PhoneDto[]> {
-		const response = await axios.put(this.baseUrl, phone)
-		return response.data
-	}
-
-	async updatePhone(phone: PhoneDto): Promise<PhoneDto[]> {
-		const response = await axios.put(this.baseUrl, phone)
-		return response.data
-	}
-
-	async deletePhone(phoneId: string): Promise<PhoneDto[]> {
-		const response = await axios.delete(`${this.baseUrl}?id=${phoneId}`)
-		return response.data
-	}
+const phoneGateway = {
+	getPhones: (): Promise<PhoneDto[]> => {
+		return requests.get(phoneApiUrl)
+	},
+	getPhone: (id: string): Promise<PhoneDto> => {
+		return requests.get(`${phoneApiUrl}${id}`)
+	},
+	create: (phone: PhoneDto): Promise<void> => {
+		return requests.post(phoneApiUrl, phone)
+	},
+	update: (phone: PhoneDto): Promise<void> => {
+		return requests.put(`${phoneApiUrl}/${phone.id}`, phone)
+	},
+	delete: (id: string): Promise<void> => {
+		return requests.delete(`${phoneApiUrl}/${id}`)
+	},
 }
+
+export default phoneGateway

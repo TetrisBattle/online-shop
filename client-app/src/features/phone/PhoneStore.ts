@@ -1,13 +1,14 @@
 import { makeAutoObservable } from 'mobx'
 import Phone from './Phone'
-import Gateway from 'Gateway'
+import gateway from 'gateway'
+import { v4 as uuid } from 'uuid'
 
 export default class PhoneStore {
 	phones: Phone[] = []
 	selectedPhone: Phone = new Phone()
 	dialogOpen = false
 
-	constructor(private gateway: Gateway) {
+	constructor() {
 		makeAutoObservable(this)
 	}
 
@@ -31,35 +32,57 @@ export default class PhoneStore {
 		}
 	}
 
+	private async getPhones(): Promise<Phone[]> {
+		try {
+			const phonesDto = await gateway.phone.getPhones()
+			const phones: Phone[] = []
+			phonesDto.forEach((phoneDto) => {
+				phones.push(Phone.convertFromDto(phoneDto))
+			})
+			return phones
+		} catch (error) {
+			throw new Error('Error getting phones')
+		}
+	}
+
 	async getPhone(phoneId: string): Promise<Phone> {
-		const phoneDto = await this.gateway.phone.getPhone(phoneId)
+		const phoneDto = await gateway.phone.getPhone(phoneId)
 		return Phone.convertFromDto(phoneDto)
 	}
 
-	private async getPhones(): Promise<Phone[]> {
-		const phonesDto = await this.gateway.phone.getPhones()
-		const phones: Phone[] = []
-		phonesDto.forEach((phoneDto) => {
-			phones.push(Phone.convertFromDto(phoneDto))
-		})
-		return phones
+	async create(newPhone: Phone) {
+		this.selectedPhone.setId(uuid())
+		this.selectedPhone.setPublishDate(new Date())
+		try {
+			await gateway.phone.create(newPhone.convertToDto())
+		} catch (error) {
+			throw new Error('Error creating phone')
+		} finally {
+			this.setPhones([...this.phones, newPhone])
+		}
 	}
 
-	create(newPhone: Phone) {
-		this.gateway.phone.createPhone(newPhone.convertToDto())
-		this.setPhones([...this.phones, newPhone])
+	async update(updatedPhone: Phone) {
+		this.selectedPhone.setUpdateDate(new Date())
+		try {
+			await gateway.phone.update(updatedPhone.convertToDto())
+		} catch (error) {
+			throw new Error('Error updating phone')
+		} finally {
+			this.setPhones([
+				...this.phones.filter((phone) => phone.id !== updatedPhone.id),
+				updatedPhone,
+			])
+		}
 	}
 
-	update(updatedPhone: Phone) {
-		this.gateway.phone.updatePhone(updatedPhone.convertToDto())
-		this.setPhones([
-			...this.phones.filter((phone) => phone.id !== updatedPhone.id),
-			updatedPhone,
-		])
-	}
-
-	delete(phoneId: string) {
-		this.gateway.phone.deletePhone(phoneId)
-		this.setPhones(this.phones.filter((phone) => phone.id !== phoneId))
+	async delete(phoneId: string) {
+		try {
+			await gateway.phone.delete(phoneId)
+		} catch (error) {
+			throw new Error('Error deleting phone')
+		} finally {
+			this.setPhones(this.phones.filter((phone) => phone.id !== phoneId))
+		}
 	}
 }
