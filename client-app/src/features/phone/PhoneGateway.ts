@@ -19,11 +19,11 @@ const phoneGateway = {
 	getPhone: (id: string): Promise<PhoneDto> => {
 		return requests.get(`${phoneApiUrl}${id}`)
 	},
-	create: (phone: PhoneDto): Promise<void> => {
-		return requests.post(phoneApiUrl, phone)
+	create: (phoneDto: PhoneDto): Promise<void> => {
+		return requests.post(phoneApiUrl, phoneDto)
 	},
-	update: (phone: PhoneDto): Promise<void> => {
-		return requests.put(`${phoneApiUrl}/${phone.id}`, phone)
+	update: (phoneDto: PhoneDto): Promise<void> => {
+		return requests.put(`${phoneApiUrl}/${phoneDto.id}`, phoneDto)
 	},
 	delete: (id: string): Promise<void> => {
 		return requests.delete(`${phoneApiUrl}/${id}`)

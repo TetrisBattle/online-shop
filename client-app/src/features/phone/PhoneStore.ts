@@ -41,7 +41,7 @@ export default class PhoneStore {
 			})
 			return phones
 		} catch (error) {
-			throw new Error('Error getting phones')
+			throw new Error()
 		}
 	}
 
@@ -53,10 +53,11 @@ export default class PhoneStore {
 	async create(newPhone: Phone) {
 		this.selectedPhone.setId(uuid())
 		this.selectedPhone.setPublishDate(new Date())
+		this.selectedPhone.setUpdateDate(new Date())
 		try {
 			await gateway.phone.create(newPhone.convertToDto())
 		} catch (error) {
-			throw new Error('Error creating phone')
+			throw new Error()
 		} finally {
 			this.setPhones([...this.phones, newPhone])
 		}
@@ -67,7 +68,7 @@ export default class PhoneStore {
 		try {
 			await gateway.phone.update(updatedPhone.convertToDto())
 		} catch (error) {
-			throw new Error('Error updating phone')
+			throw new Error()
 		} finally {
 			this.setPhones([
 				...this.phones.filter((phone) => phone.id !== updatedPhone.id),
@@ -80,7 +81,7 @@ export default class PhoneStore {
 		try {
 			await gateway.phone.delete(phoneId)
 		} catch (error) {
-			throw new Error('Error deleting phone')
+			throw new Error()
 		} finally {
 			this.setPhones(this.phones.filter((phone) => phone.id !== phoneId))
 		}
