@@ -4,6 +4,7 @@ import { useStoreContext } from 'contexts/StoreContext'
 import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { RouteOption } from 'app/Routes'
+import LoadingButton from 'components/LoadingButton'
 
 function PhonesPage() {
 	const { id: phoneId } = useParams()
@@ -20,8 +21,8 @@ function PhonesPage() {
 		navigate(RouteOption.Phones)
 	}
 
-	function handleSave() {
-		phoneStore.save().then(() => navigate(RouteOption.Phones))
+	async function handleSave() {
+		await phoneStore.save().then(() => navigate(RouteOption.Phones))
 	}
 
 	return (
@@ -79,7 +80,7 @@ function PhonesPage() {
 			</Grid>
 			<Box>
 				<Button onClick={handleCancel}>Cancel</Button>
-				<Button onClick={handleSave}>Save</Button>
+				<LoadingButton onClick={handleSave}>Save</LoadingButton>
 			</Box>
 		</Box>
 	)

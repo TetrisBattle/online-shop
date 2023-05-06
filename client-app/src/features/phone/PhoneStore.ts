@@ -56,8 +56,8 @@ export default class PhoneStore {
 	}
 
 	async save() {
-		if (!this.selectedPhone.id) this.create(this.selectedPhone)
-		else this.update(this.selectedPhone)
+		if (!this.selectedPhone.id) await this.create(this.selectedPhone)
+		else await this.update(this.selectedPhone)
 	}
 
 	async getPhones(): Promise<Phone[]> {

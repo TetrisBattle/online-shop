@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite'
 import { formatDate } from 'utility/date'
 import { useNavigate } from 'react-router-dom'
 import { RouteOption } from 'app/Routes'
+import LoadingButton from 'components/LoadingButton'
 
 interface PhoneListItemProps {
 	phone: Phone
@@ -14,8 +15,8 @@ function PhoneListItem({ phone }: PhoneListItemProps) {
 	const { phoneStore } = useStoreContext()
 	const navigate = useNavigate()
 
-	function handleDelete() {
-		phoneStore.delete(phone.id)
+	async function handleDelete() {
+		await phoneStore.delete(phone.id)
 	}
 
 	function handleEdit() {
@@ -53,9 +54,9 @@ function PhoneListItem({ phone }: PhoneListItemProps) {
 					gap: 1,
 				}}
 			>
-				<Button onClick={handleDelete} color='error'>
+				<LoadingButton onClick={handleDelete} color='error'>
 					Delete
-				</Button>
+				</LoadingButton>
 				<Button onClick={handleEdit}>Edit</Button>
 			</Box>
 		</Box>
