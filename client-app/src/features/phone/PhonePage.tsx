@@ -1,28 +1,57 @@
 import { observer } from 'mobx-react-lite'
-import { Box, Button, Grid, InputAdornment, TextField } from '@mui/material'
+import {
+	Box,
+	Button,
+	CircularProgress,
+	Grid,
+	InputAdornment,
+	TextField,
+} from '@mui/material'
 import { useStoreContext } from 'contexts/StoreContext'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { RouteOption } from 'app/Routes'
 import LoadingButton from 'components/LoadingButton'
 
 function PhonesPage() {
-	const { id: phoneId } = useParams()
 	const { phoneStore } = useStoreContext()
+	const { id: phoneId } = useParams()
 	const navigate = useNavigate()
+	const [isLoading, setIsLoading] = useState(false)
 
 	useEffect(() => {
-		phoneId === 'new'
-			? phoneStore.setSelectedPhone()
-			: phoneStore.setSelectedPhone(phoneId)
+		if (phoneId) {
+			setIsLoading(true)
+			phoneStore
+				.setSelectedPhone(phoneId)
+				.finally(() => setIsLoading(false))
+		}
 	}, [phoneStore, phoneId])
 
 	function handleCancel() {
+		phoneStore.setSelectedPhone()
 		navigate(RouteOption.Phones)
 	}
 
 	async function handleSave() {
-		await phoneStore.save().then(() => navigate(RouteOption.Phones))
+		await phoneStore.save().then(() => {
+			phoneStore.setSelectedPhone()
+			navigate(RouteOption.Phones)
+		})
+	}
+
+	if (isLoading) {
+		return (
+			<CircularProgress
+				size={96}
+				sx={{
+					position: 'absolute',
+					top: '50%',
+					left: '50%',
+					translate: '-50% -50%',
+				}}
+			/>
+		)
 	}
 
 	return (
