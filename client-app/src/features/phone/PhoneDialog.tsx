@@ -6,10 +6,12 @@ import { observer } from 'mobx-react-lite'
 function PhoneDialog() {
 	const { phoneStore } = useStoreContext()
 
+	function handleCancel() {
+		phoneStore.setDialogOpen(false)
+	}
+
 	function handleSave() {
-		if (!phoneStore.selectedPhone.id) {
-			phoneStore.create(phoneStore.selectedPhone)
-		} else phoneStore.update(phoneStore.selectedPhone)
+		phoneStore.save()
 		phoneStore.setDialogOpen(false)
 	}
 
@@ -17,15 +19,13 @@ function PhoneDialog() {
 		<CustomDialog
 			id='PhoneDialog'
 			open={phoneStore.dialogOpen}
-			onClose={() => phoneStore.setDialogOpen(false)}
+			onClose={handleCancel}
 			title={
 				!phoneStore.selectedPhone.id ? 'Add new phone' : 'Edit phone'
 			}
 			actions={
 				<>
-					<Button onClick={() => phoneStore.setDialogOpen(false)}>
-						Cancel
-					</Button>
+					<Button onClick={handleCancel}>Cancel</Button>
 					<Button onClick={handleSave}>Save</Button>
 				</>
 			}

@@ -12,8 +12,20 @@ export default class PhoneStore {
 		makeAutoObservable(this)
 	}
 
-	init() {
-		this.getPhones()
+	async init(): Promise<void> {
+		try {
+			const phonesDto = await gateway.phone.getPhones()
+			phonesDto.forEach((phoneDto) => {
+				runInAction(() => {
+					this.phoneRegistry.set(
+						phoneDto.id,
+						Phone.convertFromDto(phoneDto)
+					)
+				})
+			})
+		} catch (error) {
+			throw new Error()
+		}
 	}
 
 	get phones() {
@@ -34,20 +46,9 @@ export default class PhoneStore {
 		}
 	}
 
-	private async getPhones(): Promise<void> {
-		try {
-			const phonesDto = await gateway.phone.getPhones()
-			phonesDto.forEach((phoneDto) => {
-				runInAction(() => {
-					this.phoneRegistry.set(
-						phoneDto.id,
-						Phone.convertFromDto(phoneDto)
-					)
-				})
-			})
-		} catch (error) {
-			throw new Error()
-		}
+	save() {
+		if (!this.selectedPhone.id) this.create(this.selectedPhone)
+		else this.update(this.selectedPhone)
 	}
 
 	async getPhone(phoneId: string): Promise<Phone> {
