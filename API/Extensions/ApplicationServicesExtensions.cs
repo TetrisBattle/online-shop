@@ -1,4 +1,7 @@
 using Application.Core;
+using Application.Phones;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -29,10 +32,10 @@ public static class ApplicationServicesExtensions
 				.WithOrigins("http://localhost:3000")
 		));
 
-		services.AddMediatR(typeof(Application.Phones.GetPhones.Handler));
-
+		services.AddMediatR(typeof(GetPhones.Handler));
 		services.AddAutoMapper(typeof(MappingProfiles).Assembly);
-
+		services.AddFluentValidationAutoValidation();
+		services.AddValidatorsFromAssemblyContaining<CreatePhone.CommandValidator>();
 		return services;
 	}
 }

@@ -1,4 +1,5 @@
 using Domain;
+using FluentValidation;
 using MediatR;
 using Persistence;
 
@@ -9,6 +10,11 @@ public static class CreatePhone
 	public class Command : IRequest
 	{
 		public Phone Phone { get; set; }
+	}
+
+	public class CommandValidator : AbstractValidator<Command>
+	 {
+		public CommandValidator() => RuleFor(x => x.Phone).SetValidator(new PhoneValidator());
 	}
 
 	public class Handler : IRequestHandler<Command>

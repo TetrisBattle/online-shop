@@ -11,8 +11,7 @@ function LoadingButton({ onClick, children, ...props }: LoadingButtonProps) {
 
 	async function handleClick() {
 		setIsLoading(true)
-		await onClick()
-		setIsLoading(false)
+		await onClick().finally(() => setIsLoading(false))
 	}
 
 	return (

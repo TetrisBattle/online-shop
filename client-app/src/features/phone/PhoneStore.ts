@@ -84,12 +84,11 @@ export default class PhoneStore {
 		this.selectedPhone.setPublishDate(new Date())
 		try {
 			await gateway.phone.create(newPhone.convertToDto())
-		} catch (error) {
-			throw new Error()
-		} finally {
 			runInAction(() => {
 				this.phoneRegistry.set(newPhone.id, newPhone)
 			})
+		} catch (error) {
+			throw new Error()
 		}
 	}
 
@@ -97,24 +96,22 @@ export default class PhoneStore {
 		this.selectedPhone.setUpdateDate(new Date())
 		try {
 			await gateway.phone.update(updatedPhone.convertToDto())
-		} catch (error) {
-			throw new Error()
-		} finally {
 			runInAction(() => {
 				this.phoneRegistry.set(updatedPhone.id, updatedPhone)
 			})
+		} catch (error) {
+			throw new Error()
 		}
 	}
 
 	async delete(phoneId: string) {
 		try {
 			await gateway.phone.delete(phoneId)
-		} catch (error) {
-			throw new Error()
-		} finally {
 			runInAction(() => {
 				this.phoneRegistry.delete(phoneId)
 			})
+		} catch (error) {
+			throw new Error()
 		}
 	}
 }
