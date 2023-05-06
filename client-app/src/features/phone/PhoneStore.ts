@@ -7,7 +7,6 @@ export default class PhoneStore {
 	phoneRegistry = new Map<string, Phone>()
 	selectedPhone: Phone = new Phone()
 	phonesAreSet = false
-	dialogOpen = false
 
 	constructor() {
 		makeAutoObservable(this)
@@ -48,13 +47,6 @@ export default class PhoneStore {
 				this.selectedPhone = phone
 			})
 		})
-	}
-
-	setDialogOpen(open: boolean) {
-		this.dialogOpen = open
-		if (!open) {
-			this.setSelectedPhone()
-		}
 	}
 
 	async save() {
