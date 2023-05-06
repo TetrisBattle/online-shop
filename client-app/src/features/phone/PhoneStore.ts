@@ -6,6 +6,7 @@ import { v4 as uuid } from 'uuid'
 export default class PhoneStore {
 	phoneRegistry = new Map<string, Phone>()
 	selectedPhone: Phone = new Phone()
+	phonesAreSet = false
 	dialogOpen = false
 
 	constructor() {
@@ -24,6 +25,7 @@ export default class PhoneStore {
 			phones.forEach((phone) => {
 				runInAction(() => {
 					this.phoneRegistry.set(phone.id, phone)
+					this.phonesAreSet = true
 				})
 			})
 		})

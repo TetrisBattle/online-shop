@@ -15,7 +15,7 @@ function PhonesPage() {
 	}
 
 	useEffect(() => {
-		if (phoneStore.phoneRegistry.size === 0) {
+		if (!phoneStore.phonesAreSet) {
 			phoneStore.setPhones()
 		}
 	}, [phoneStore])
