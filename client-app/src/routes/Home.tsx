@@ -1,22 +1,10 @@
 import { observer } from 'mobx-react-lite'
-import { Box, Button } from '@mui/material'
-import PhoneList from 'features/phone/PhoneList'
-import PhoneDialog from 'features/phone/PhoneDialog'
-import { useStoreContext } from 'contexts/StoreContext'
+import { Box, Typography } from '@mui/material'
 
 function Home() {
-	const { phoneStore } = useStoreContext()
-
 	return (
 		<Box id='Home' sx={{ p: { xs: 2, sm: 3 } }}>
-			<Button
-				onClick={() => phoneStore.setDialogOpen(true)}
-				sx={{ ml: 3, mr: 'auto', borderRadius: 10 }}
-			>
-				Add new Item
-			</Button>
-			<PhoneList />
-			<PhoneDialog />
+			<Typography variant='h1'>Home</Typography>
 		</Box>
 	)
 }

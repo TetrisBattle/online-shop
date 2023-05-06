@@ -12,22 +12,6 @@ export default class PhoneStore {
 		makeAutoObservable(this)
 	}
 
-	async init(): Promise<void> {
-		try {
-			const phonesDto = await gateway.phone.getPhones()
-			phonesDto.forEach((phoneDto) => {
-				runInAction(() => {
-					this.phoneRegistry.set(
-						phoneDto.id,
-						Phone.convertFromDto(phoneDto)
-					)
-				})
-			})
-		} catch (error) {
-			throw new Error()
-		}
-	}
-
 	get phones() {
 		const phonesArray = Array.from(this.phoneRegistry.values())
 		return phonesArray.sort((a, b) =>
@@ -35,14 +19,39 @@ export default class PhoneStore {
 		)
 	}
 
-	setSelectedPhone(phone: Phone) {
-		this.selectedPhone = phone
+	async setPhones(): Promise<void> {
+		this.getPhones().then((phones) => {
+			phones.forEach((phone) => {
+				runInAction(() => {
+					this.phoneRegistry.set(phone.id, phone)
+				})
+			})
+		})
+	}
+
+	async setSelectedPhone(phoneId?: string) {
+		if (!phoneId) {
+			this.selectedPhone = new Phone()
+			return
+		}
+
+		const phone = this.phoneRegistry.get(phoneId)
+		if (phone) {
+			this.selectedPhone = phone.copy()
+			return
+		}
+
+		this.getPhone(phoneId).then((phone) => {
+			runInAction(() => {
+				this.selectedPhone = phone
+			})
+		})
 	}
 
 	setDialogOpen(open: boolean) {
 		this.dialogOpen = open
 		if (!open) {
-			this.setSelectedPhone(new Phone())
+			this.setSelectedPhone()
 		}
 	}
 
@@ -51,9 +60,29 @@ export default class PhoneStore {
 		else this.update(this.selectedPhone)
 	}
 
+	async getPhones(): Promise<Phone[]> {
+		try {
+			const phonesDto = await gateway.phone.getPhones()
+			const phones: Phone[] = []
+			phonesDto.forEach((phoneDto) => {
+				phones.push(Phone.convertFromDto(phoneDto))
+			})
+			return phones
+		} catch (error) {
+			throw new Error()
+		}
+	}
+
 	async getPhone(phoneId: string): Promise<Phone> {
-		const phoneDto = await gateway.phone.getPhone(phoneId)
-		return Phone.convertFromDto(phoneDto)
+		const phone = this.phoneRegistry.get(phoneId)
+		if (phone) return phone.copy()
+
+		try {
+			const phoneDto = await gateway.phone.getPhone(phoneId)
+			return Phone.convertFromDto(phoneDto)
+		} catch (error) {
+			throw new Error()
+		}
 	}
 
 	async create(newPhone: Phone) {

@@ -3,6 +3,8 @@ import { useStoreContext } from 'contexts/StoreContext'
 import Phone from './Phone'
 import { observer } from 'mobx-react-lite'
 import { formatDate } from 'utility/date'
+import { Link } from 'react-router-dom'
+import { RouteOption } from 'app/Routes'
 
 interface PhoneListItemProps {
 	phone: Phone
@@ -10,11 +12,6 @@ interface PhoneListItemProps {
 
 function PhoneListItem({ phone }: PhoneListItemProps) {
 	const { phoneStore } = useStoreContext()
-
-	function handleEdit() {
-		phoneStore.setSelectedPhone(phone.copy())
-		phoneStore.setDialogOpen(true)
-	}
 
 	function handleDelete() {
 		phoneStore.delete(phone.id)
@@ -54,7 +51,12 @@ function PhoneListItem({ phone }: PhoneListItemProps) {
 				<Button onClick={handleDelete} color='error'>
 					Delete
 				</Button>
-				<Button onClick={handleEdit}>Edit</Button>
+				<Button
+					component={Link}
+					to={`${RouteOption.Phones}/${phone.id}`}
+				>
+					Edit
+				</Button>
 			</Box>
 		</Box>
 	)

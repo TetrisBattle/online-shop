@@ -3,7 +3,7 @@ import HeaderMenu from './HeaderMenu'
 import DarkThemeIconButton from '../DarkThemeIconButton'
 import HeaderButton from './HeaderButton'
 import { ReactComponent as Logo } from 'assets/Logo.svg'
-import { RouteOption } from 'App'
+import { RouteOption } from 'app/Routes'
 
 export default function Header() {
 	return (
@@ -27,8 +27,15 @@ export default function Header() {
 				>
 					<HeaderButton route={RouteOption.Home} />
 					<HeaderButton route={RouteOption.About} />
+					<HeaderButton route={RouteOption.Phones} />
 				</Box>
-				<HeaderMenu routes={[RouteOption.Home, RouteOption.About]} />
+				<HeaderMenu
+					routes={[
+						RouteOption.Home,
+						RouteOption.About,
+						RouteOption.Phones,
+					]}
+				/>
 				<DarkThemeIconButton sx={{ color: 'inherit' }} />
 			</Toolbar>
 		</AppBar>

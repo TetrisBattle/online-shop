@@ -10,6 +10,7 @@ import {
 import CloseIcon from '@mui/icons-material/Close'
 
 interface CustomDialogProps extends DialogProps {
+	onClose: () => void
 	title: string
 	actions: React.ReactNode
 	children: React.ReactNode
@@ -38,7 +39,7 @@ function CustomDialog({
 				<Typography component='h2' sx={{ fontSize: 20, pl: 2 }}>
 					{title}
 				</Typography>
-				<IconButton color='inherit'>
+				<IconButton color='inherit' onClick={() => onClose()}>
 					<CloseIcon fontSize='large' />
 				</IconButton>
 			</Box>
