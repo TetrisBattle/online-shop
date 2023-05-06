@@ -3,7 +3,7 @@ import { useStoreContext } from 'contexts/StoreContext'
 import Phone from './Phone'
 import { observer } from 'mobx-react-lite'
 import { formatDate } from 'utility/date'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { RouteOption } from 'app/Routes'
 
 interface PhoneListItemProps {
@@ -12,9 +12,14 @@ interface PhoneListItemProps {
 
 function PhoneListItem({ phone }: PhoneListItemProps) {
 	const { phoneStore } = useStoreContext()
+	const navigate = useNavigate()
 
 	function handleDelete() {
 		phoneStore.delete(phone.id)
+	}
+
+	function handleEdit() {
+		navigate(`${RouteOption.Phones}/${phone.id}`)
 	}
 
 	return (
@@ -51,12 +56,7 @@ function PhoneListItem({ phone }: PhoneListItemProps) {
 				<Button onClick={handleDelete} color='error'>
 					Delete
 				</Button>
-				<Button
-					component={Link}
-					to={`${RouteOption.Phones}/${phone.id}`}
-				>
-					Edit
-				</Button>
+				<Button onClick={handleEdit}>Edit</Button>
 			</Box>
 		</Box>
 	)

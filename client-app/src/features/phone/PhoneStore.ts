@@ -55,7 +55,7 @@ export default class PhoneStore {
 		}
 	}
 
-	save() {
+	async save() {
 		if (!this.selectedPhone.id) this.create(this.selectedPhone)
 		else this.update(this.selectedPhone)
 	}

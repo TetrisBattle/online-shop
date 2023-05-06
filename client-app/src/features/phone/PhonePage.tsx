@@ -2,12 +2,13 @@ import { observer } from 'mobx-react-lite'
 import { Box, Button, Grid, InputAdornment, TextField } from '@mui/material'
 import { useStoreContext } from 'contexts/StoreContext'
 import { useEffect } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { RouteOption } from 'app/Routes'
 
 function PhonesPage() {
 	const { id: phoneId } = useParams()
 	const { phoneStore } = useStoreContext()
+	const navigate = useNavigate()
 
 	useEffect(() => {
 		phoneId === 'new'
@@ -15,8 +16,12 @@ function PhonesPage() {
 			: phoneStore.setSelectedPhone(phoneId)
 	}, [phoneStore, phoneId])
 
+	function handleCancel() {
+		navigate(RouteOption.Phones)
+	}
+
 	function handleSave() {
-		phoneStore.save()
+		phoneStore.save().then(() => navigate(RouteOption.Phones))
 	}
 
 	return (
@@ -73,16 +78,8 @@ function PhonesPage() {
 				</Grid>
 			</Grid>
 			<Box>
-				<Button component={Link} to={RouteOption.Phones}>
-					Cancel
-				</Button>
-				<Button
-					component={Link}
-					to={RouteOption.Phones}
-					onClick={handleSave}
-				>
-					Save
-				</Button>
+				<Button onClick={handleCancel}>Cancel</Button>
+				<Button onClick={handleSave}>Save</Button>
 			</Box>
 		</Box>
 	)
