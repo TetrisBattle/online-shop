@@ -1,23 +1,16 @@
 import { Button, ButtonProps, CircularProgress } from '@mui/material'
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
 
 interface LoadingButtonProps extends ButtonProps {
-	onClick: () => Promise<void>
+	loading: boolean
 }
 
-function LoadingButton({ onClick, children, ...props }: LoadingButtonProps) {
+function LoadingButton({ loading, children, ...props }: LoadingButtonProps) {
 	const loadingButtonRef = useRef<HTMLButtonElement>(null)
-	const [isLoading, setIsLoading] = useState(false)
-
-	async function handleClick() {
-		setIsLoading(true)
-		await onClick().finally(() => setIsLoading(false))
-	}
 
 	return (
 		<Button
 			ref={loadingButtonRef}
-			onClick={handleClick}
 			{...props}
 			sx={{
 				width: loadingButtonRef.current?.clientWidth,
@@ -25,7 +18,7 @@ function LoadingButton({ onClick, children, ...props }: LoadingButtonProps) {
 				...props.sx,
 			}}
 		>
-			{isLoading ? (
+			{loading ? (
 				<CircularProgress color='inherit' size={24} />
 			) : (
 				children

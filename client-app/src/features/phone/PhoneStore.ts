@@ -5,7 +5,6 @@ import { v4 as uuid } from 'uuid'
 
 export default class PhoneStore {
 	phoneRegistry = new Map<string, Phone>()
-	selectedPhone: Phone = new Phone()
 	phonesAreSet = false
 
 	constructor() {
@@ -30,28 +29,22 @@ export default class PhoneStore {
 		})
 	}
 
-	async setSelectedPhone(phoneId?: string) {
+	async getPhone(phoneId?: string): Promise<Phone> {
 		if (!phoneId) {
-			this.selectedPhone = new Phone()
-			return
+			return new Phone()
 		}
 
-		const phone = this.phoneRegistry.get(phoneId)
-		if (phone) {
-			this.selectedPhone = phone.copy()
-			return
-		}
+		let phone = this.phoneRegistry.get(phoneId)
+		if (phone) return phone.copy()
 
-		this.getPhone(phoneId).then((phone) => {
-			runInAction(() => {
-				this.selectedPhone = phone
-			})
-		})
+		phone = await this.findPhone(phoneId).then((phone) => phone)
+		if (!phone) throw new Error('Phone not found')
+		else return phone
 	}
 
-	async save() {
-		if (!this.selectedPhone.id) await this.create(this.selectedPhone)
-		else await this.update(this.selectedPhone)
+	async save(phone: Phone) {
+		if (!phone.id) await this.create(phone)
+		else await this.update(phone)
 	}
 
 	async getPhones(): Promise<Phone[]> {
@@ -63,17 +56,17 @@ export default class PhoneStore {
 		return phones
 	}
 
-	async getPhone(phoneId: string): Promise<Phone> {
+	async findPhone(phoneId: string): Promise<Phone> {
 		const phone = this.phoneRegistry.get(phoneId)
 		if (phone) return phone.copy()
 
-		const phoneDto = await gateway.phone.getPhone(phoneId)
+		const phoneDto = await gateway.phone.findPhone(phoneId)
 		return Phone.convertFromDto(phoneDto)
 	}
 
 	async create(newPhone: Phone) {
-		this.selectedPhone.setId(uuid())
-		this.selectedPhone.setPublishDate(new Date())
+		newPhone.setId(uuid())
+		newPhone.setPublishDate(new Date())
 
 		await gateway.phone.create(newPhone.convertToDto())
 		runInAction(() => {
@@ -82,7 +75,7 @@ export default class PhoneStore {
 	}
 
 	async update(updatedPhone: Phone) {
-		this.selectedPhone.setUpdateDate(new Date())
+		updatedPhone.setUpdateDate(new Date())
 
 		await gateway.phone.update(updatedPhone.convertToDto())
 		runInAction(() => {

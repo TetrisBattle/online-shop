@@ -18,24 +18,6 @@ export default class Phone {
 		this.id = id
 	}
 
-	setName(name: string) {
-		this.name = name
-	}
-
-	setPrice(price: string) {
-		if (price === '') this.price = ''
-		if (!Number(price) || /\s/.test(price)) return
-		this.price = price
-	}
-
-	setDescription(description: string) {
-		this.description = description
-	}
-
-	setCategory(category: string) {
-		this.category = category
-	}
-
 	setPublishDate(publishDate: Date) {
 		this.publishDate = publishDate
 	}

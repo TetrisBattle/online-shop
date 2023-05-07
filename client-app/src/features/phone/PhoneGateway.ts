@@ -16,7 +16,7 @@ const phoneGateway = {
 	getPhones: (): Promise<PhoneDto[]> => {
 		return requests.get(phoneApiUrl)
 	},
-	getPhone: (id: string): Promise<PhoneDto> => {
+	findPhone: (id: string): Promise<PhoneDto> => {
 		return requests.get(`${phoneApiUrl}/${id}`)
 	},
 	create: (phoneDto: PhoneDto): Promise<void> => {

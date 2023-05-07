@@ -6,6 +6,7 @@ import { formatDate } from 'utility/dateHandler'
 import { useNavigate } from 'react-router-dom'
 import { RouteOption } from 'app/Routes'
 import LoadingButton from 'components/LoadingButton'
+import { useState } from 'react'
 
 interface PhoneListItemProps {
 	phone: Phone
@@ -14,9 +15,13 @@ interface PhoneListItemProps {
 function PhoneListItem({ phone }: PhoneListItemProps) {
 	const { phoneStore } = useStoreContext()
 	const navigate = useNavigate()
+	const [isDeleting, setIsDeleting] = useState(false)
 
-	async function handleDelete() {
-		await phoneStore.delete(phone.id)
+	function handleDelete() {
+		setIsDeleting(true)
+		phoneStore.delete(phone.id).finally(() => {
+			setIsDeleting(false)
+		})
 	}
 
 	function handleEdit() {
@@ -54,7 +59,11 @@ function PhoneListItem({ phone }: PhoneListItemProps) {
 					gap: 1,
 				}}
 			>
-				<LoadingButton onClick={handleDelete} color='error'>
+				<LoadingButton
+					loading={isDeleting}
+					color='error'
+					onClick={handleDelete}
+				>
 					Delete
 				</LoadingButton>
 				<Button onClick={handleEdit}>Edit</Button>

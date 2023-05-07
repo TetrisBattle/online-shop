@@ -13,9 +13,9 @@ public class PhonesController : BaseApiController
 	}
 
 	[HttpGet("{id}")]
-	public async Task<IActionResult> GetPhone(Guid id)
+	public async Task<IActionResult> FindPhone(Guid id)
 	{
-		return HandleResult(await Mediator.Send(new GetPhone.Query { Id = id }));
+		return HandleResult(await Mediator.Send(new FindPhone.Query { Id = id }));
 	}
 
 	[HttpPost]

@@ -5,7 +5,7 @@ using Persistence;
 
 namespace Application.Phones;
 
-public static class GetPhone
+public static class FindPhone
 {
 	public class Query : IRequest<Result<Phone>>
 	{
