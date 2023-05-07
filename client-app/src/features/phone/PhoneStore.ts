@@ -55,63 +55,45 @@ export default class PhoneStore {
 	}
 
 	async getPhones(): Promise<Phone[]> {
-		try {
-			const phonesDto = await gateway.phone.getPhones()
-			const phones: Phone[] = []
-			phonesDto.forEach((phoneDto) => {
-				phones.push(Phone.convertFromDto(phoneDto))
-			})
-			return phones
-		} catch (error) {
-			throw new Error()
-		}
+		const phonesDto = await gateway.phone.getPhones()
+		const phones: Phone[] = []
+		phonesDto.forEach((phoneDto) => {
+			phones.push(Phone.convertFromDto(phoneDto))
+		})
+		return phones
 	}
 
 	async getPhone(phoneId: string): Promise<Phone> {
 		const phone = this.phoneRegistry.get(phoneId)
 		if (phone) return phone.copy()
 
-		try {
-			const phoneDto = await gateway.phone.getPhone(phoneId)
-			return Phone.convertFromDto(phoneDto)
-		} catch (error) {
-			throw new Error()
-		}
+		const phoneDto = await gateway.phone.getPhone(phoneId)
+		return Phone.convertFromDto(phoneDto)
 	}
 
 	async create(newPhone: Phone) {
 		this.selectedPhone.setId(uuid())
 		this.selectedPhone.setPublishDate(new Date())
-		try {
-			await gateway.phone.create(newPhone.convertToDto())
-			runInAction(() => {
-				this.phoneRegistry.set(newPhone.id, newPhone)
-			})
-		} catch (error) {
-			throw new Error()
-		}
+
+		await gateway.phone.create(newPhone.convertToDto())
+		runInAction(() => {
+			this.phoneRegistry.set(newPhone.id, newPhone)
+		})
 	}
 
 	async update(updatedPhone: Phone) {
 		this.selectedPhone.setUpdateDate(new Date())
-		try {
-			await gateway.phone.update(updatedPhone.convertToDto())
-			runInAction(() => {
-				this.phoneRegistry.set(updatedPhone.id, updatedPhone)
-			})
-		} catch (error) {
-			throw new Error()
-		}
+
+		await gateway.phone.update(updatedPhone.convertToDto())
+		runInAction(() => {
+			this.phoneRegistry.set(updatedPhone.id, updatedPhone)
+		})
 	}
 
 	async delete(phoneId: string) {
-		try {
-			await gateway.phone.delete(phoneId)
-			runInAction(() => {
-				this.phoneRegistry.delete(phoneId)
-			})
-		} catch (error) {
-			throw new Error()
-		}
+		await gateway.phone.delete(phoneId)
+		runInAction(() => {
+			this.phoneRegistry.delete(phoneId)
+		})
 	}
 }
