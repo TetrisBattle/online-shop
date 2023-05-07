@@ -33,7 +33,7 @@ function PhonesPage() {
 		navigate(RouteOption.Phones)
 	}
 
-	async function handleSave() {
+	async function handleSubmit() {
 		await phoneStore.save().then(() => {
 			phoneStore.setSelectedPhone()
 			navigate(RouteOption.Phones)
@@ -55,7 +55,12 @@ function PhonesPage() {
 	}
 
 	return (
-		<Box id='PhonePage' sx={{ p: { xs: 2, sm: 3 } }}>
+		<Box
+			id='PhonePage'
+			component='form'
+			onSubmit={handleSubmit}
+			sx={{ p: { xs: 2, sm: 3 } }}
+		>
 			<Grid container spacing={2}>
 				<Grid item xs={6}>
 					<TextField
@@ -109,7 +114,9 @@ function PhonesPage() {
 			</Grid>
 			<Box>
 				<Button onClick={handleCancel}>Cancel</Button>
-				<LoadingButton onClick={handleSave}>Save</LoadingButton>
+				<LoadingButton type='submit' onClick={handleSubmit}>
+					Save
+				</LoadingButton>
 			</Box>
 		</Box>
 	)
