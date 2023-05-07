@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { Box, Button, CircularProgress } from '@mui/material'
-import PhoneList from 'features/phone/PhoneList'
+import PhoneList from 'features/phone/components/PhoneList'
 import { useStoreContext } from 'contexts/StoreContext'
 import { useEffect, useState } from 'react'
 import { RouteOption } from 'app/Routes'

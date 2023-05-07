@@ -6,19 +6,19 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { RouteOption } from 'app/Routes'
 import LoadingButton from 'components/LoadingButton'
 import { Formik } from 'formik'
-import Phone from './Phone'
+import Phone from '../Phone'
 import * as Yup from 'yup'
 import FormTextField from 'components/form/FormTextField'
-import { categoryOptions } from './options'
+import { categoryOptions } from '../options'
 
-function PhonesPage() {
+function PhoneForm() {
 	const { phoneStore } = useStoreContext()
 	const { id: phoneId } = useParams()
 	const navigate = useNavigate()
 	const [phone, setPhone] = useState(new Phone())
 	const [isLoading, setIsLoading] = useState(false)
 
-	const validationSchema = Yup.object({
+	const phoneSchema = Yup.object({
 		name: Yup.string().required(),
 		price: Yup.number().required(),
 		category: Yup.string().required(),
@@ -59,9 +59,12 @@ function PhonesPage() {
 	}
 
 	return (
-		<Box id='PhonePage' sx={{ p: { xs: 2, sm: 3 } }}>
+		<Box
+			id={phoneId ? 'EditPhone' : 'NewPhone'}
+			sx={{ p: { xs: 2, sm: 3 } }}
+		>
 			<Formik
-				validationSchema={validationSchema}
+				validationSchema={phoneSchema}
 				enableReinitialize
 				initialValues={phone}
 				onSubmit={handleFormSubmit}
@@ -135,4 +138,4 @@ function PhonesPage() {
 	)
 }
 
-export default observer(PhonesPage)
+export default observer(PhoneForm)

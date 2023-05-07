@@ -1,7 +1,7 @@
 import App from 'app/App'
 import NotFound from 'routes/NotFound'
-import PhonePage from 'features/phone/PhonePage'
-import PhonesPage from 'features/phone/PhonesPage'
+import PhoneForm from 'features/phone/components/PhoneForm'
+import PhonesPage from 'features/phone/components/PhonesPage'
 import { Navigate, RouteObject, createBrowserRouter } from 'react-router-dom'
 import About from 'routes/About'
 import Home from 'routes/Home'
@@ -30,8 +30,8 @@ export const routes: RouteObject[] = [
 			{ path: RouteOption.Home, element: <Home /> },
 			{ path: RouteOption.About, element: <About /> },
 			{ path: RouteOption.Phones, element: <PhonesPage /> },
-			{ path: `${RouteOption.Phones}/new`, element: <PhonePage /> },
-			{ path: `${RouteOption.Phones}/:id`, element: <PhonePage /> },
+			{ path: `${RouteOption.Phones}/new`, element: <PhoneForm /> },
+			{ path: `${RouteOption.Phones}/:id`, element: <PhoneForm /> },
 		],
 	},
 ]

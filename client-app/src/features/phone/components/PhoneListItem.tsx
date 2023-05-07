@@ -1,6 +1,6 @@
 import { Box, Button, Typography } from '@mui/material'
 import { useStoreContext } from 'contexts/StoreContext'
-import Phone from './Phone'
+import Phone from '../Phone'
 import { observer } from 'mobx-react-lite'
 import { formatDate } from 'utility/dateHandler'
 import { useNavigate } from 'react-router-dom'
