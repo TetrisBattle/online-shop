@@ -1,3 +1,4 @@
+using Application.Core;
 using AutoMapper;
 using Domain;
 using FluentValidation;
@@ -8,17 +9,17 @@ namespace Application.Phones;
 
 public static class UpdatePhone
 {
-	public class Command : IRequest
+	public class Command : IRequest<Result<Unit>>
 	{
 		public Phone Phone { get; set; }
 	}
 
 	public class CommandValidator : AbstractValidator<Command>
-	 {
+	{
 		public CommandValidator() => RuleFor(x => x.Phone).SetValidator(new PhoneValidator());
 	}
 
-	public class Handler : IRequestHandler<Command>
+	public class Handler : IRequestHandler<Command, Result<Unit>>
 	{
 		private readonly DataContext _context;
 		private readonly IMapper _mapper;
@@ -29,15 +30,21 @@ public static class UpdatePhone
 			_mapper = mapper;
 		}
 
-		public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+		public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
 		{
-			var phone = await _context.Phones.FindAsync(new object[] { request.Phone.Id }, cancellationToken: cancellationToken);
+			var phone = await _context.Phones.FindAsync(
+				new object[] { request.Phone.Id }, cancellationToken: cancellationToken
+			);
+
+			if (phone == null) return null;
 
 			_mapper.Map(request.Phone, phone);
 
-			await _context.SaveChangesAsync(cancellationToken);
+			var result = await _context.SaveChangesAsync(cancellationToken) > 0;
 
-			return Unit.Value;
+			if (!result) return Result<Unit>.Failure("Failed to update phone");
+
+			return Result<Unit>.Success(Unit.Value);
 		}
 	}
 }

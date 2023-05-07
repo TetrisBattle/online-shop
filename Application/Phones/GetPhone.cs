@@ -1,3 +1,4 @@
+using Application.Core;
 using Domain;
 using MediatR;
 using Persistence;
@@ -6,12 +7,12 @@ namespace Application.Phones;
 
 public static class GetPhone
 {
-	public class Query : IRequest<Phone>
+	public class Query : IRequest<Result<Phone>>
 	{
 		public Guid Id { get; set; }
 	}
 
-	public class Handler : IRequestHandler<Query, Phone>
+	public class Handler : IRequestHandler<Query, Result<Phone>>
 	{
 		private readonly DataContext _context;
 
@@ -20,9 +21,12 @@ public static class GetPhone
 			_context = context;
 		}
 
-		public async Task<Phone> Handle(Query request, CancellationToken cancellationToken)
+		public async Task<Result<Phone>> Handle(Query request, CancellationToken cancellationToken)
 		{
-			return await _context.Phones.FindAsync(new object[] { request.Id }, cancellationToken: cancellationToken);
+			var phone = await _context.Phones.FindAsync(
+				new object[] { request.Id }, cancellationToken: cancellationToken
+			);
+			return Result<Phone>.Success(phone);
 		}
 	}
 }

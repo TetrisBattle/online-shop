@@ -1,3 +1,4 @@
+using Application.Core;
 using Domain;
 using FluentValidation;
 using MediatR;
@@ -7,7 +8,7 @@ namespace Application.Phones;
 
 public static class CreatePhone
 {
-	public class Command : IRequest
+	public class Command : IRequest<Result<Unit>>
 	{
 		public Phone Phone { get; set; }
 	}
@@ -17,7 +18,7 @@ public static class CreatePhone
 		public CommandValidator() => RuleFor(x => x.Phone).SetValidator(new PhoneValidator());
 	}
 
-	public class Handler : IRequestHandler<Command>
+	public class Handler : IRequestHandler<Command, Result<Unit>>
 	{
 		private readonly DataContext _context;
 
@@ -26,13 +27,15 @@ public static class CreatePhone
 			_context = context;
 		}
 
-		public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+		public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
 		{
 			_context.Phones.Add(request.Phone);
 
-			await _context.SaveChangesAsync(cancellationToken);
+			var result = await _context.SaveChangesAsync(cancellationToken) > 0;
 
-			return Unit.Value;
+			if (!result) return Result<Unit>.Failure("Failed to create phone");
+
+			return Result<Unit>.Success(Unit.Value);
 		}
 	}
 }
