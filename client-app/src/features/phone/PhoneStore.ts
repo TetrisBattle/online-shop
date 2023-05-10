@@ -20,6 +20,8 @@ export default class PhoneStore {
 
 	async setPhones(): Promise<void> {
 		this.getPhones().then((phones) => {
+			if (!phones.length) return
+
 			phones.forEach((phone) => {
 				runInAction(() => {
 					this.phoneRegistry.set(phone.id, phone)
@@ -30,9 +32,7 @@ export default class PhoneStore {
 	}
 
 	async getPhone(phoneId?: string): Promise<Phone> {
-		if (!phoneId) {
-			return new Phone()
-		}
+		if (!phoneId) return new Phone()
 
 		let phone = this.phoneRegistry.get(phoneId)
 		if (phone) return phone.copy()
@@ -48,45 +48,65 @@ export default class PhoneStore {
 	}
 
 	async getPhones(): Promise<Phone[]> {
-		const phonesDto = await gateway.phone.getPhones()
-		const phones: Phone[] = []
-		phonesDto.forEach((phoneDto) => {
-			phones.push(Phone.convertFromDto(phoneDto))
-		})
-		return phones
+		try {
+			const phonesDto = await gateway.phone.getPhones()
+			const phones: Phone[] = []
+			phonesDto.forEach((phoneDto) => {
+				phones.push(Phone.convertFromDto(phoneDto))
+			})
+			return phones
+		} catch (error) {
+			throw new Error()
+		}
 	}
 
 	async findPhone(phoneId: string): Promise<Phone> {
 		const phone = this.phoneRegistry.get(phoneId)
 		if (phone) return phone.copy()
 
-		const phoneDto = await gateway.phone.findPhone(phoneId)
-		return Phone.convertFromDto(phoneDto)
+		try {
+			const phoneDto = await gateway.phone.findPhone(phoneId)
+			return Phone.convertFromDto(phoneDto)
+		} catch (error) {
+			throw new Error()
+		}
 	}
 
 	async create(newPhone: Phone) {
 		newPhone.setId(uuid())
 		newPhone.setPublishDate(new Date())
 
-		await gateway.phone.create(newPhone.convertToDto())
-		runInAction(() => {
-			this.phoneRegistry.set(newPhone.id, newPhone)
-		})
+		try {
+			await gateway.phone.create(newPhone.convertToDto())
+			runInAction(() => {
+				this.phoneRegistry.set(newPhone.id, newPhone)
+			})
+		} catch (error) {
+			throw new Error()
+		}
 	}
 
 	async update(updatedPhone: Phone) {
 		updatedPhone.setUpdateDate(new Date())
 
-		await gateway.phone.update(updatedPhone.convertToDto())
-		runInAction(() => {
-			this.phoneRegistry.set(updatedPhone.id, updatedPhone)
-		})
+		try {
+			await gateway.phone.update(updatedPhone.convertToDto())
+			runInAction(() => {
+				this.phoneRegistry.set(updatedPhone.id, updatedPhone)
+			})
+		} catch (error) {
+			throw new Error()
+		}
 	}
 
 	async delete(phoneId: string) {
-		await gateway.phone.delete(phoneId)
-		runInAction(() => {
-			this.phoneRegistry.delete(phoneId)
-		})
+		try {
+			await gateway.phone.delete(phoneId)
+			runInAction(() => {
+				this.phoneRegistry.delete(phoneId)
+			})
+		} catch (error) {
+			throw new Error()
+		}
 	}
 }

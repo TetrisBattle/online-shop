@@ -10,6 +10,11 @@ axios.interceptors.response.use(
 		return response
 	},
 	async (error) => {
+		if (!error.response) {
+			toast.error('Network error')
+			return
+		}
+
 		const { data, status, config } = error.response as AxiosResponse
 
 		switch (status) {
