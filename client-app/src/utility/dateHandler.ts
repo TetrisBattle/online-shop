@@ -1,5 +1,3 @@
-import { format } from 'date-fns'
-
 export function formatDate(date: Date) {
-	return format(date, 'dd.MM.yyyy')
+	return date.toLocaleDateString('fi-FI')
 }

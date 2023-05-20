@@ -28,10 +28,15 @@ function FormTextField({
 				helperText={meta.touched && meta.error}
 				onChange={(e) => {
 					const value = e.target.value
+
 					if (value === '') {
 						helpers.setValue('')
 						return
 					}
+
+					const decimals = value.split('.')?.[1]
+					if (decimals && decimals.length > 2) return
+
 					if (Number(value) && !/\s/.test(value)) {
 						helpers.setValue(value)
 					}

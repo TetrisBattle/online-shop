@@ -6,7 +6,7 @@ import { Navigate, RouteObject, createBrowserRouter } from 'react-router-dom'
 import About from 'routes/About'
 import Home from 'routes/Home'
 
-export enum RouteOption {
+export const enum RouteOption {
 	NotFound = '/404',
 	Home = '/home',
 	About = '/about',
