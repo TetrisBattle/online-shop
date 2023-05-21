@@ -14,12 +14,12 @@ public static class IdentityServiceExtensions
 		IConfiguration config
 	)
 	{
-		services.AddIdentityCore<User>((opt =>
+		services.AddIdentityCore<User>(opt =>
 		{
 			opt.Password.RequireNonAlphanumeric = false;
 			opt.Password.RequiredLength = 8;
 			opt.User.RequireUniqueEmail = true;
-		}))
+		})
 		.AddEntityFrameworkStores<DataContext>();
 
 		var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
