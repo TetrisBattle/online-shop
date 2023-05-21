@@ -18,7 +18,7 @@ export default class PhoneStore {
 		)
 	}
 
-	async setPhones(): Promise<void> {
+	setPhones = async (): Promise<void> => {
 		this.getPhones().then((phones) => {
 			if (!phones.length) return
 
@@ -31,7 +31,7 @@ export default class PhoneStore {
 		})
 	}
 
-	async getPhone(phoneId?: string): Promise<Phone> {
+	getPhone = async (phoneId?: string): Promise<Phone> => {
 		if (!phoneId) return new Phone()
 
 		let phone = this.phoneRegistry.get(phoneId)
@@ -42,12 +42,12 @@ export default class PhoneStore {
 		else return phone
 	}
 
-	async save(phone: Phone) {
+	save = async (phone: Phone) => {
 		if (!phone.id) await this.create(phone)
 		else await this.update(phone)
 	}
 
-	async getPhones(): Promise<Phone[]> {
+	getPhones = async (): Promise<Phone[]> => {
 		try {
 			const phonesDto = await gateway.phone.getPhones()
 			const phones: Phone[] = []
@@ -60,7 +60,7 @@ export default class PhoneStore {
 		}
 	}
 
-	async findPhone(phoneId: string): Promise<Phone> {
+	findPhone = async (phoneId: string): Promise<Phone> => {
 		const phone = this.phoneRegistry.get(phoneId)
 		if (phone) return phone.copy()
 
@@ -72,7 +72,7 @@ export default class PhoneStore {
 		}
 	}
 
-	async create(newPhone: Phone) {
+	create = async (newPhone: Phone) => {
 		newPhone.setId(uuid())
 		newPhone.setPublishDate(new Date())
 
@@ -86,7 +86,7 @@ export default class PhoneStore {
 		}
 	}
 
-	async update(updatedPhone: Phone) {
+	update = async (updatedPhone: Phone) => {
 		updatedPhone.setUpdateDate(new Date())
 
 		try {
@@ -99,7 +99,7 @@ export default class PhoneStore {
 		}
 	}
 
-	async delete(phoneId: string) {
+	delete = async (phoneId: string) => {
 		try {
 			await gateway.phone.delete(phoneId)
 			runInAction(() => {

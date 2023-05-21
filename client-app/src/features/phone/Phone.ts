@@ -14,19 +14,19 @@ export default class Phone {
 		makeAutoObservable(this)
 	}
 
-	setId(id: string) {
+	setId = (id: string) => {
 		this.id = id
 	}
 
-	setPublishDate(publishDate: Date) {
+	setPublishDate = (publishDate: Date) => {
 		this.publishDate = publishDate
 	}
 
-	setUpdateDate(updateDate: Date | null) {
+	setUpdateDate = (updateDate: Date | null) => {
 		this.updateDate = updateDate
 	}
 
-	static convertFromDto(dto: PhoneDto): Phone {
+	static convertFromDto = (dto: PhoneDto): Phone => {
 		return new Phone(
 			dto.id,
 			dto.name,
@@ -38,7 +38,7 @@ export default class Phone {
 		)
 	}
 
-	convertToDto(): PhoneDto {
+	convertToDto = (): PhoneDto => {
 		return {
 			id: this.id,
 			name: this.name,
@@ -50,7 +50,7 @@ export default class Phone {
 		}
 	}
 
-	copy(): Phone {
+	copy = (): Phone => {
 		return new Phone(
 			this.id,
 			this.name,
