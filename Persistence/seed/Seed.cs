@@ -14,16 +14,16 @@ public static class Seed
 		if (!userManager.Users.Any()) {
 			var users = new List<User> {
 				new User {
-					UserName = "Taikaviitta",
-					FirstName = "Aku",
-					LastName = "Ankka",
-					Email = "aku@test.com",
+					UserName = "TestUser",
+					FirstName = "FirstName",
+					LastName = "LastName",
+					Email = "test@test.com",
 				},
 				new User {
-					UserName = "Superhessu",
-					FirstName = "Hessu",
-					LastName = "Hopo",
-					Email = "hessu@test.com",
+					UserName = "TestAdmin",
+					FirstName = "Admin",
+					LastName = "Administrator",
+					Email = "admin@test.com",
 				},
 			};
 			foreach (var user in users) {
