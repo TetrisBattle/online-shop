@@ -1,6 +1,6 @@
 import { forwardRef } from 'react'
 import { Alert, AlertColor } from '@mui/material'
-import { CustomContentProps, SnackbarContent, closeSnackbar } from 'notistack'
+import { CustomContentProps, closeSnackbar } from 'notistack'
 import { SnackbarCloseOption } from './showSnackbar'
 
 declare module 'notistack' {
@@ -33,17 +33,14 @@ const CustomSnackbar = forwardRef<HTMLDivElement, SnackbarProps>(
 		}
 
 		return (
-			<SnackbarContent ref={ref} role='alert'>
-				<Alert
-					variant='filled'
-					severity={variant as AlertColor}
-					onClose={
-						closeOption === 'never' ? undefined : handleDismiss
-					}
-				>
-					{message}
-				</Alert>
-			</SnackbarContent>
+			<Alert
+				ref={ref}
+				variant='filled'
+				severity={variant as AlertColor}
+				onClose={closeOption === 'never' ? undefined : handleDismiss}
+			>
+				{message}
+			</Alert>
 		)
 	}
 )
