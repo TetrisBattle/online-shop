@@ -3,16 +3,14 @@ import { Box, Button, CircularProgress } from '@mui/material'
 import PhoneList from 'features/phone/components/PhoneList'
 import { useStoreContext } from 'contexts/StoreContext'
 import { useEffect, useState } from 'react'
-import { RouteOption } from 'app/Routes'
-import { useNavigate } from 'react-router-dom'
+import { RouteOption, router } from 'app/Routes'
 
 function PhonesPage() {
 	const { phoneStore } = useStoreContext()
-	const navigate = useNavigate()
 	const [isLoading, setIsLoading] = useState(false)
 
 	function handleAddNew() {
-		navigate(`${RouteOption.Phones}/new`)
+		router.navigate(`${RouteOption.Phones}/new`)
 	}
 
 	useEffect(() => {

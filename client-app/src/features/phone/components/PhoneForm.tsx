@@ -2,8 +2,8 @@ import { observer } from 'mobx-react-lite'
 import { Box, Button, CircularProgress, InputAdornment } from '@mui/material'
 import { useStoreContext } from 'contexts/StoreContext'
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import { RouteOption } from 'app/Routes'
+import { useParams } from 'react-router-dom'
+import { RouteOption, router } from 'app/Routes'
 import LoadingButton from 'components/LoadingButton'
 import { Formik } from 'formik'
 import Phone from '../Phone'
@@ -14,7 +14,6 @@ import { categoryOptions } from '../options'
 function PhoneForm() {
 	const { phoneStore } = useStoreContext()
 	const { id: phoneId } = useParams()
-	const navigate = useNavigate()
 	const [phone, setPhone] = useState(new Phone())
 	const [isLoading, setIsLoading] = useState(false)
 
@@ -35,12 +34,12 @@ function PhoneForm() {
 	}, [phoneStore, phoneId])
 
 	function handleCancel() {
-		navigate(RouteOption.Phones)
+		router.navigate(RouteOption.Phones)
 	}
 
 	async function handleFormSubmit(phone: Phone) {
 		await phoneStore.save(phone).then(() => {
-			navigate(RouteOption.Phones)
+			router.navigate(RouteOption.Phones)
 		})
 	}
 
