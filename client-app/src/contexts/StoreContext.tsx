@@ -16,6 +16,6 @@ export function StoreContextProvider({ children }: StoreContextProviderProps) {
 	)
 }
 
-export function useStoreContext() {
+export function useStore() {
 	return useContext(StoreContext)
 }

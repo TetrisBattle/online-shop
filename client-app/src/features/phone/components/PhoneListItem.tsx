@@ -1,5 +1,5 @@
 import { Box, Button, Typography } from '@mui/material'
-import { useStoreContext } from 'contexts/StoreContext'
+import { useStore } from 'contexts/StoreContext'
 import Phone from '../Phone'
 import { observer } from 'mobx-react-lite'
 import { formatDate } from 'utility/dateHandler'
@@ -12,7 +12,7 @@ interface PhoneListItemProps {
 }
 
 function PhoneListItem({ phone }: PhoneListItemProps) {
-	const { phoneStore } = useStoreContext()
+	const { phoneStore } = useStore()
 	const [isDeleting, setIsDeleting] = useState(false)
 
 	function handleDelete() {

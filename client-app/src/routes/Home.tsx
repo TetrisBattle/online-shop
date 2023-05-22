@@ -3,7 +3,7 @@ import { Box, Typography } from '@mui/material'
 
 function Home() {
 	return (
-		<Box id='Home' sx={{ p: { xs: 2, sm: 3 } }}>
+		<Box id='Home' sx={{ p: 2 }}>
 			<Typography variant='h1'>Home</Typography>
 		</Box>
 	)

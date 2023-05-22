@@ -1,10 +1,10 @@
 import { Box } from '@mui/material'
-import { useStoreContext } from 'contexts/StoreContext'
+import { useStore } from 'contexts/StoreContext'
 import { observer } from 'mobx-react-lite'
 import PhoneListItem from './PhoneListItem'
 
 function PhoneList() {
-	const { phoneStore } = useStoreContext()
+	const { phoneStore } = useStore()
 
 	return (
 		<Box

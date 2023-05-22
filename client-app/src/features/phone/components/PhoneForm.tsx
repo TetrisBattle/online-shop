@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { Box, Button, CircularProgress, InputAdornment } from '@mui/material'
-import { useStoreContext } from 'contexts/StoreContext'
+import { useStore } from 'contexts/StoreContext'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { RouteOption, router } from 'app/Routes'
@@ -10,17 +10,18 @@ import Phone from '../Phone'
 import * as Yup from 'yup'
 import FormTextField from 'components/form/FormTextField'
 import { categoryOptions } from '../options'
+import FormTitle from 'components/form/FormTitle'
 
 function PhoneForm() {
-	const { phoneStore } = useStoreContext()
+	const { phoneStore } = useStore()
 	const { id: phoneId } = useParams()
 	const [phone, setPhone] = useState(new Phone())
 	const [isLoading, setIsLoading] = useState(false)
 
 	const phoneSchema = Yup.object({
-		name: Yup.string().required(),
-		price: Yup.number().required(),
-		category: Yup.string().required(),
+		name: Yup.string().required('Name is required'),
+		price: Yup.number().required('Price is required'),
+		category: Yup.string().required('Category is required'),
 	})
 
 	useEffect(() => {
@@ -58,22 +59,21 @@ function PhoneForm() {
 	}
 
 	return (
-		<Box
-			id={phoneId ? 'EditPhone' : 'NewPhone'}
-			sx={{ p: { xs: 2, sm: 3 } }}
-		>
+		<Box id={phoneId ? 'EditPhone' : 'NewPhone'} sx={{ p: 2 }}>
+			<FormTitle>{phoneId ? 'Edit Phone' : 'New Phone'}</FormTitle>
 			<Formik
 				validationSchema={phoneSchema}
 				enableReinitialize
 				initialValues={phone}
 				onSubmit={handleFormSubmit}
+				validateOnBlur={false}
 			>
 				{({ handleSubmit, isValid, isSubmitting, dirty }) => (
 					<Box
 						component='form'
 						onSubmit={handleSubmit}
 						sx={{
-							maxWidth: (theme) => theme.breakpoints.values.sm,
+							maxWidth: 400,
 							mx: 'auto',
 							display: 'flex',
 							flexDirection: 'column',
@@ -86,6 +86,7 @@ function PhoneForm() {
 							required
 							fullWidth
 						/>
+
 						<FormTextField
 							name='price'
 							label='Price'
@@ -100,11 +101,14 @@ function PhoneForm() {
 								),
 							}}
 						/>
+
 						<FormTextField
 							name='description'
 							label='Description'
 							fullWidth
+							multiline
 						/>
+
 						<FormTextField
 							name='category'
 							label='Category'
@@ -112,6 +116,7 @@ function PhoneForm() {
 							required
 							fullWidth
 						/>
+
 						<Box
 							sx={{
 								display: 'flex',
@@ -122,6 +127,7 @@ function PhoneForm() {
 							<Button variant='outlined' onClick={handleCancel}>
 								Cancel
 							</Button>
+
 							<LoadingButton
 								loading={isSubmitting}
 								type='submit'

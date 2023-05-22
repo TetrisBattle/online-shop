@@ -29,14 +29,14 @@ public class AccountController : ControllerBase
 		if (await _userManager.Users.AnyAsync(x => x.Email == registerDto.Email))
 		{
 			ModelState.AddModelError("email", "Email is already taken");
-			return ValidationProblem();
 		}
 
 		if (await _userManager.Users.AnyAsync(x => x.UserName == registerDto.Username))
 		{
 			ModelState.AddModelError("username", "Username is already taken");
-			return ValidationProblem();
 		}
+
+		if (!ModelState.IsValid) return ValidationProblem();
 
 		var user = new User
 		{

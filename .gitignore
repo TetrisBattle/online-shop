@@ -476,9 +476,10 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-
-API/appsettings.json
-API/online_shop.db
-API/online_shop.db-shm
-API/online_shop.db-wal
-Persistence/Migrations
+# Custom
+/API/appsettings.json
+/API/online_shop.db
+/API/online_shop.db-shm
+/API/online_shop.db-wal
+/Persistence/Migrations
+/notes.txt

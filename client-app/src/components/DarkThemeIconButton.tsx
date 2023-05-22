@@ -1,9 +1,9 @@
 import { Brightness4Outlined as Brightness4OutlinedIcon } from '@mui/icons-material'
 import { IconButton, IconButtonProps } from '@mui/material'
-import { useStoreContext } from 'contexts/StoreContext'
+import { useStore } from 'contexts/StoreContext'
 
 export default function DarkThemeIconButton(iconButtonProps: IconButtonProps) {
-	const { appStore } = useStoreContext()
+	const { appStore } = useStore()
 
 	return (
 		<IconButton onClick={appStore.toggleDarkTheme} {...iconButtonProps}>

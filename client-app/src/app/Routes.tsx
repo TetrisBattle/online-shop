@@ -1,13 +1,17 @@
+import { Navigate, RouteObject, createBrowserRouter } from 'react-router-dom'
 import App from 'app/App'
 import NotFound from 'routes/NotFound'
-import PhoneForm from 'features/phone/components/PhoneForm'
-import PhonesPage from 'features/phone/components/PhonesPage'
-import { Navigate, RouteObject, createBrowserRouter } from 'react-router-dom'
-import About from 'routes/About'
+import Login from 'features/users/components/Login'
+import RegisterForm from 'features/users/components/Register'
 import Home from 'routes/Home'
+import About from 'routes/About'
+import PhonesPage from 'features/phone/components/PhonesPage'
+import PhoneForm from 'features/phone/components/PhoneForm'
 
 export const enum RouteOption {
 	NotFound = '/404',
+	Login = '/login',
+	Register = '/register',
 	Home = '/home',
 	About = '/about',
 	Phones = '/phones',
@@ -27,6 +31,8 @@ export const routes: RouteObject[] = [
 				path: '*',
 				element: <Navigate replace to={RouteOption.NotFound} />,
 			},
+			{ path: RouteOption.Login, element: <Login /> },
+			{ path: RouteOption.Register, element: <RegisterForm /> },
 			{ path: RouteOption.Home, element: <Home /> },
 			{ path: RouteOption.About, element: <About /> },
 			{ path: RouteOption.Phones, element: <PhonesPage /> },

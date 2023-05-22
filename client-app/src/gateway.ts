@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
+import accountGateway from 'features/users/AccountGateway'
 import phoneGateway from './features/phone/PhoneGateway'
 import { RouteOption, router } from 'app/Routes'
 import toast from 'snackbar/toast'
@@ -21,16 +22,17 @@ axios.interceptors.response.use(
 			case 400:
 				if (
 					config.method === 'get' &&
-					// eslint-disable-next-line no-prototype-builtins
-					data.errors.hasOwnProperty('id')
+					Object.prototype.hasOwnProperty.call(data, 'id')
 				) {
 					router.navigate(RouteOption.NotFound)
+				} else if (data.errors) {
+					throw error
 				} else {
 					toast.error(`${status} Bad request`)
 				}
 				break
 			case 401:
-				toast.error(`${status} Unauthorised`)
+				// toast.error(`${status} Unauthorised`)
 				break
 			case 403:
 				toast.error(`${status} Forbidden`)
@@ -42,7 +44,7 @@ axios.interceptors.response.use(
 				toast.error(`${status} Server error`)
 				break
 			default:
-				toast.error(`${status} Unkown error`)
+				toast.error(`${status} Unknown error`)
 				break
 		}
 
@@ -62,6 +64,7 @@ export const requests = {
 
 const gateway = {
 	phone: phoneGateway,
+	account: accountGateway,
 }
 
 export default gateway
